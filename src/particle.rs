@@ -5,12 +5,16 @@ use macroquad::prelude::*;
 
 pub const DELTA_T: f32 = 0.001; //This can maybe replaced with let delta = get_frame_time(); ? but idk what that does
 
-pub const B_FIELD: f32 = 3.8;
-
 pub const EM_CONST: f32 = 0.001;
+
+pub struct TrackPoint {
+    pub pos: Vec3,
+    //pub time: f32,
+}
 
 pub struct Particle {
     pub pos: Vec3,
+    pub track: Vec<TrackPoint>,
     pub mom: Vec3,
     pub mass: f32,
     pub size: f32,
@@ -24,15 +28,25 @@ pub fn spawn(v: Vec<Particle>, location: Vec3, mom: Vec3) -> Vec<Particle> {
 
     v_temp.push(Particle {
         pos: location,
+        track: vec![TrackPoint{pos: location}],
         mom: mom,
         mass: 10.0,
-        size: 1.0,
+        size: 0.1,
         pdg_id: 10,
         charge: rand::gen_range(-2, 2),
     });
 
     v_temp
 }
+
+pub fn draw_track(p: &Particle) {
+    for w in p.track.windows(2) {
+        let p0 = w[0].pos;
+        let p1 = w[1].pos;
+        draw_line_3d(p0, p1, BLACK);
+    }
+}
+
 
 /* pub fn despawn(v: &Particle) -> bool {
 
@@ -45,10 +59,18 @@ pub fn spawn(v: Vec<Particle>, location: Vec3, mom: Vec3) -> Vec<Particle> {
     result
 } */
 
-pub fn update_particles(particles: &mut Vec<Particle>) {
+pub fn update_particles(particles: &mut Vec<Particle>, b_field: Vec3, update_track: bool) {
     for p in particles.iter_mut() {
 
+
+            
+
+            lorentz_force(p, b_field);
             p.pos += p.mom * DELTA_T;
+
+
+            if update_track { p.track.push(TrackPoint { pos: p.pos }); }
+            
 
             let color = if p.charge < 0 {
                     RED
@@ -57,23 +79,26 @@ pub fn update_particles(particles: &mut Vec<Particle>) {
                 } else {
                     BLACK
                 };
+            
 
             draw_sphere(p.pos, p.size, None, color);
+            draw_track(p);
+            
         }
     }
 
-/* pub fn lorentz_force(p: &mut Particle) {
+pub fn lorentz_force(p: &mut Particle, b_field: Vec3) {
     
     // Lorentz force: F = q * v × B
     // For 2D with B field in z-direction: F_x = c * q * v_y * B, F_y = c* -q * v_x * B
-    let acc_x = EM_CONST * p.charge as f32 * p.vel.y * B_FIELD;
-    let acc_y = EM_CONST * -(p.charge as f32) * p.vel.x * B_FIELD;
+    
+    let acc = EM_CONST * p.charge as f32 * (p.mom.cross(b_field));
     
     // Update velocity
-    p.vel.x += acc_x * DELTA_T;
-    p.vel.y += acc_y * DELTA_T;
+
+    p.mom += acc;
     
-} */
+}
 
 /* pub fn mom_exchange(p: &mut Particle) {
     

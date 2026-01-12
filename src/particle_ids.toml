@@ -1,0 +1,123 @@
+# ============================
+# Standard Model particles
+# ============================
+
+[particles.electron]
+name = "electron"
+pdg_id = 11
+mass_GeV = 0.000511
+charge = -1
+spin = 0.5
+stable = true
+production_xsec_pb = 1.0e8   # QED dominated (process-dependent!)
+
+[particles.positron]
+name = "positron"
+pdg_id = -11
+mass_GeV = 0.000511
+charge = 1
+spin = 0.5
+stable = true
+production_xsec_pb = 1.0e8
+
+[particles.muon]
+name = "muon"
+pdg_id = 13
+mass_GeV = 0.10566
+charge = -1
+spin = 0.5
+stable = false
+lifetime_s = 2.197e-6
+
+[particles.photon]
+name = "photon"
+pdg_id = 22
+mass_GeV = 0.0
+charge = 0
+spin = 1
+stable = true
+
+[particles.z_boson]
+name = "Z"
+pdg_id = 23
+mass_GeV = 91.1876
+charge = 0
+spin = 1
+width_GeV = 2.4952
+production_xsec_pb = 60000.0   # pp → Z (13 TeV)
+
+[particles.w_boson]
+name = "W"
+pdg_id = 24
+mass_GeV = 80.379
+charge = 1
+spin = 1
+width_GeV = 2.085
+production_xsec_pb = 200000.0  # pp → W (13 TeV)
+
+[particles.higgs]
+name = "Higgs"
+pdg_id = 25
+mass_GeV = 125.25
+charge = 0
+spin = 0
+width_GeV = 0.00407
+production_xsec_pb = 55.0      # ggF @ 13 TeV
+
+# ============================
+# SUSY (example MSSM particles)
+# ============================
+
+[particles.neutralino1]
+name = "chi_10"
+pdg_id = 1000022
+mass_GeV = 100.0
+charge = 0
+spin = 0.5
+stable = true
+production_xsec_pb = 0.1       # model-dependent
+
+[particles.chargino1]
+name = "chi_1+"
+pdg_id = 1000024
+mass_GeV = 150.0
+charge = 1
+spin = 0.5
+stable = false
+production_xsec_pb = 0.05
+
+[particles.selectron_L]
+name = "selectron_L"
+pdg_id = 1000011
+mass_GeV = 250.0
+charge = -1
+spin = 0.0
+stable = false
+production_xsec_pb = 0.01
+
+[particles.smuon_L]
+name = "smuon_L"
+pdg_id = 1000013
+mass_GeV = 250.0
+charge = -1
+spin = 0.0
+stable = false
+production_xsec_pb = 0.01
+
+[particles.slepton_snu]
+name = "sneutrino"
+pdg_id = 1000012
+mass_GeV = 245.0
+charge = 0
+spin = 0.0
+stable = false
+production_xsec_pb = 0.02
+
+# ============================
+# Metadata
+# ============================
+
+[meta]
+collision = "pp"
+energy_TeV = 13.6
+notes = "Cross sections are order-of-magnitude placeholders unless stated otherwise."
